@@ -2,27 +2,35 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
-import { getAllPosts, getNextPost, getPrevPost, getRecommendedPosts, getSlug } from "../../utils/posts";
 
+import { getCollection } from 'astro:content';
+import { getNextPost, getPrevPost, getRecommendedPosts, getSlug } from "../../utils/posts";
+
+// 🔥 Astro genera las rutas correctamente
 export async function getStaticPaths() {
-  const posts = await getAllPosts();
-  return posts.map((post) => {
-    // El slug puede ser post.id o post.slug dependiendo de la versión de Astro
-    const slug = post.id?.replace(/\.md$/, '') || post.slug;
-    return {
-      params: { slug },
-      props: { post },
-    };
-  });
+  const posts = await getCollection('blog');
+
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
 }
 
+// 👇 este post ahora viene de Astro (no de tu util)
 const { post } = Astro.props;
 const { data } = post;
-const currentSlug = getSlug(post);
+
+// ⚠️ aquí está el ajuste clave
+// usamos el slug nativo de Astro
+const currentSlug = post.slug;
+
+// 👇 tus utils siguen funcionando, pero con el slug correcto
 const nextPost = await getNextPost(currentSlug);
-const nextSlug = getSlug(nextPost);
+const nextSlug = nextPost ? getSlug(nextPost) : null;
+
 const prevPost = await getPrevPost(currentSlug);
-const prevSlug = getSlug(prevPost);
+const prevSlug = prevPost ? getSlug(prevPost) : null;
+
 const recommendedPosts = await getRecommendedPosts(currentSlug);
 ---
 
