@@ -19,7 +19,7 @@ const recentPosts = posts.slice(0, 3);
 
   <main>
     <div class="container-fluid" style="background: linear-gradient(135deg, #004200 0%, #006600 100%); min-height: 100px; display: flex; align-items: center; justify-content: center;">
-      <a href="#" style="text-decoration: none;"><h2 class="text-white m-0">Todos los posts (modelo completo)</h2></a>
+      <a href={import.meta.env.BASE_URL} style="text-decoration: none;"><h2 class="text-white m-0">Todos los posts (modelo completo)</h2></a>
     </div>
 
     <div class="container py-5">
@@ -67,7 +67,7 @@ const recentPosts = posts.slice(0, 3);
 
               <div class="mt-3">
                 {post.data.tags.map((tag) => (
-                <a href="/" style="text-decoration: none;">  <span class="badge bg-success me-1">{tag}</span> </a>
+                <a href={import.meta.env.BASE_URL} style="text-decoration: none;">  <span class="badge bg-success me-1">{tag}</span> </a>
                 ))}
               </div>
             </article>
@@ -127,7 +127,7 @@ const recentPosts = posts.slice(0, 3);
             <ul style="list-style: none; padding: 0">
               {recentPosts.map((post) => (
                 <li style="padding: 8px 0; border-bottom: 1px solid #ddd">
-                  <a href={`/post/${getSlug(post)}`} style="color: #004200; text-decoration: none">
+                  <a href={`${import.meta.env.BASE_URL}post/${getSlug(post)}`} style="color: #004200; text-decoration: none">
                     {post.data.title}
                   </a>
                 </li>

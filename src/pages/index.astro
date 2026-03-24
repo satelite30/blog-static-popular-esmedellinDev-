@@ -132,7 +132,7 @@ const recentPosts = publicaciones.slice(0, 3);
             <ul style="list-style: none; padding: 0">
               {recentPosts.map((post) => (
                 <li style="padding: 8px 0; border-bottom: 1px solid #ddd" key={getSlug(post)}>
-                  <a href={`/post/${getSlug(post)}`} style="color: #004200; text-decoration: none">
+                  <a href={`${import.meta.env.BASE_URL}post/${getSlug(post)}`} style="color: #004200; text-decoration: none">
                     {post.data.title}
                   </a>
                 </li>
@@ -145,7 +145,7 @@ const recentPosts = publicaciones.slice(0, 3);
   </main>
 
   <Footer />
-</BaseLayout>
+  <meta name="base-url" content={import.meta.env.BASE_URL} />
 
 <style>
   .blog-card {
@@ -295,6 +295,7 @@ const recentPosts = publicaciones.slice(0, 3);
   if (historialEl) {
     const sortedKeys = Object.keys(history).sort().reverse();
     const accordionId = 'historyAccordion';
+    const baseUrl = document.querySelector('meta[property="astro:base"]')?.getAttribute('content') || import.meta.env.BASE_URL || '';
     historialEl.innerHTML = `
       <div class="accordion" id="${accordionId}">
         ${sortedKeys.map((key, index) => {
@@ -303,7 +304,7 @@ const recentPosts = publicaciones.slice(0, 3);
           const headingId = `heading${index}`;
           const postsHtml = posts.map(post => {
             return `<li style="padding: 4px 0; border-bottom: 1px solid #eee;">
-              <a href="/post/${post.slug}" style="color: #004200; text-decoration: none; font-size: 14px;">
+              <a href="${baseUrl}post/${post.slug}" style="color: #004200; text-decoration: none; font-size: 14px;">
                 ${post.publish} - ${post.title}
               </a>
             </li>`;
@@ -319,7 +320,6 @@ const recentPosts = publicaciones.slice(0, 3);
                 <div class="accordion-body" style="padding: 10px;">
                   <ul style="list-style: none; padding: 0; margin: 0;">
                     ${postsHtml}
-                  </ul>
                 </div>
               </div>
             </div>
